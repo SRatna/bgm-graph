@@ -34,7 +34,7 @@ jobs:
         uses: nogsantos/scp-deploy@master
         with:
           src: ./dist/*
-          host: ${{ secrets.REMOTE_HOST }}
+          host: ec2-52-3-245-43.compute-1.amazonaws.com
           remote: ${{ secrets.REMOTE_TARGET }}
           port: 22
           user: ${{ secrets.REMOTE_USER }}
