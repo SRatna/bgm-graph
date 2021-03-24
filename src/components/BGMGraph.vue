@@ -20,7 +20,7 @@
           stroke="black"
           stroke-width="1"
         />
-        <template v-for="n in 8">
+        <template v-for="n in 6">
           <line
             :x1="center"
             :y1="center"
@@ -38,21 +38,23 @@
           </text>
         </template>
       </svg>
-      <template v-for="n in 8">
+      <template v-for="n in 6">
         <span :class="legendClasses[n - 1]" :key="'legend' + n">
           {{ legends[n - 1] }}
         </span>
       </template>
     </div>
     <div style="padding-top: 32px">
-      <template v-for="n in 8">
+      <template v-for="n in 6">
         <div class="input-container" :key="'input' + n">
           <label>{{ legends[n - 1] }}</label>
           <input type="number" min="1" max="4" v-model="values[n - 1]" />
         </div>
       </template>
     </div>
-    <button style="padding: 8px; margin: 16px" @click="onSubmit">See Result</button>
+    <button style="padding: 8px; margin: 16px" @click="onSubmit">
+      See Result
+    </button>
   </div>
 </template>
 
@@ -65,18 +67,9 @@ export default {
       distance90: 50,
       labelXOffset: 12, // this depends on text size
       labelYOffset: 18,
-      legends: ["one", "two", "three", "four", "five", "six", "seven", "eight"],
-      legendClasses: [
-        "one",
-        "two",
-        "three",
-        "four",
-        "five",
-        "six",
-        "seven",
-        "eight",
-      ],
-      values: [1, 1, 1, 1, 1, 1, 1, 1],
+      legends: ["one", "two", "three", "four", "five", "six"],
+      legendClasses: ["one", "two", "three", "four", "five", "six"],
+      values: [1, 1, 1, 1, 1, 1],
       showResult: false,
       finalPoints: "",
     };
@@ -85,65 +78,19 @@ export default {
     center() {
       return this.length / 2;
     },
-    distance45() {
-      return this.distance90 / Math.sqrt(2);
-    },
     labelX() {
       return this.center - this.labelXOffset;
     },
   },
   methods: {
     getLinePoints(lineNum, pointNum) {
-      switch (lineNum) {
-        case 1: {
-          return {
-            x: this.center + this.distance90 * pointNum,
-            y: this.center,
-          };
-        }
-        case 2: {
-          return {
-            x: this.center + this.distance45 * pointNum,
-            y: this.center - this.distance45 * pointNum,
-          };
-        }
-        case 3: {
-          return {
-            x: this.center,
-            y: this.center - this.distance90 * pointNum,
-          };
-        }
-        case 4: {
-          return {
-            x: this.center - this.distance45 * pointNum,
-            y: this.center - this.distance45 * pointNum,
-          };
-        }
-        case 5: {
-          return {
-            x: this.center - this.distance90 * pointNum,
-            y: this.center,
-          };
-        }
-        case 6: {
-          return {
-            x: this.center - this.distance45 * pointNum,
-            y: this.center + this.distance45 * pointNum,
-          };
-        }
-        case 7: {
-          return {
-            x: this.center,
-            y: this.center + this.distance90 * pointNum,
-          };
-        }
-        case 8: {
-          return {
-            x: this.center + this.distance45 * pointNum,
-            y: this.center + this.distance45 * pointNum,
-          };
-        }
-      }
+      const angle = ((90 - (lineNum - 1) * 60) * Math.PI) / 180;
+      const distanceX = this.distance90 * Math.cos(angle);
+      const distanceY = this.distance90 * Math.sin(angle);
+      return {
+        x: this.center + distanceX * pointNum,
+        y: this.center - distanceY * pointNum,
+      };
     },
     labelY(pointNum) {
       return this.center - pointNum * this.distance90 + this.labelYOffset;
@@ -170,43 +117,33 @@ export default {
 }
 .graph-cotainer .one {
   position: absolute;
-  left: 460px;
-  top: 240px;
+  left: 236px;
+  top: 25px;
 }
 .graph-cotainer .two {
   position: absolute;
-  left: 400px;
-  top: 90px;
+  left: 435px;
+  top: 135px;
 }
 .graph-cotainer .three {
   position: absolute;
-  left: 230px;
-  top: 25px;
+  left: 435px;
+  top: 345px;
 }
 .graph-cotainer .four {
   position: absolute;
-  left: 75px;
-  top: 90px;
+  left: 236px;
+  top: 455px;
 }
 .graph-cotainer .five {
   position: absolute;
-  left: 15px;
-  top: 240px;
+  left: 40px;
+  top: 345px;
 }
 .graph-cotainer .six {
   position: absolute;
-  left: 80px;
-  top: 390px;
-}
-.graph-cotainer .seven {
-  position: absolute;
-  left: 230px;
-  top: 455px;
-}
-.graph-cotainer .eight {
-  position: absolute;
-  left: 395px;
-  top: 390px;
+  left: 50px;
+  top: 135px;
 }
 .input-container {
   padding: 8px;
